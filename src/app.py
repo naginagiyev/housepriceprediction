@@ -9,17 +9,17 @@ predictor = Predictor(model_path)
 st.set_page_config(layout="wide", page_title="Flat Price Prediction")
 
 if 'map_lat' not in st.session_state:
-    st.session_state['map_lat'] = None
+    st.session_state['map_lat'] = ""
 if 'map_lon' not in st.session_state:
-    st.session_state['map_lon'] = None
+    st.session_state['map_lon'] = ""
 
 def make_prediction():
     has_error = False
 
     try:
         lat_value = float(st.session_state.get("lat_input", ""))
-        if not (40.0 <= lat_value <= 41.0):
-            st.error(f"Latitude {lat_value} seems outside the expected range for Baku (40.0 - 41.0).")
+        if not (40 <= lat_value <= 40.65):
+            st.error(f"Latitude {lat_value} seems outside the expected range for Baku (40 - 40.65).")
             has_error = True
     except ValueError:
         st.error("Latitude must be a valid number.")
@@ -27,8 +27,8 @@ def make_prediction():
 
     try:
         lon_value = float(st.session_state.get("lon_input", ""))
-        if not (49.0 <= lon_value <= 50.0):
-            st.error(f"Longitude {lon_value} seems outside the expected range for Baku (49.0 - 50.0).")
+        if not (49.25 <= lon_value <= 50.5):
+            st.error(f"Longitude {lon_value} seems outside the expected range for Baku (49.25 - 50.5).")
             has_error = True
     except ValueError:
         st.error("Longitude must be a valid number.")
@@ -160,10 +160,8 @@ with col2:
     if map_data and map_data.get("last_clicked"):
         lat = map_data["last_clicked"]["lat"]
         lon = map_data["last_clicked"]["lng"]
-        
-        st.session_state['map_lat'] = lat
-        st.session_state['map_lon'] = lon
-        
-        st.success(f"Clicked location: Latitude: `{lat}`, Longitude: `{lon}`")
-        if st.button("Use these coordinates", key="use_coords"):
-            st.rerun() 
+
+        if lat != st.session_state.get('map_lat') or lon != st.session_state.get('map_lon'):
+            st.session_state['map_lat'] = lat
+            st.session_state['map_lon'] = lon
+            st.rerun()
