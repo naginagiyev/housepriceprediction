@@ -1,0 +1,10 @@
+streamlit==1.42.0
+streamlit_folium==0.25.0
+folium==0.18.0
+geopy==2.4.1
+pandas==2.2.3
+numpy==1.26.4
+pathlib==1.0.1
+tqdm==4.66.4
+catboost==1.2.7
+scikit-learn==1.4.2
