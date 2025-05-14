@@ -12,7 +12,6 @@ warnings.filterwarnings('ignore')
 print("Processing...")
 try:
     train = pd.read_excel("./data/train.xlsx") 
-    print(train['latitude'].min(), train['longitude'].min())
     test = pd.read_excel("./data/test.xlsx")
     oot = pd.read_excel("./data/oot.xlsx")
 
@@ -102,16 +101,6 @@ if test_oot_difference <= 0.2:
     print(f"✅ No overfit for test and oot! Gap is {round(test_oot_difference, 4)}")
 else:
     print(f"⚠️ Overfit for test and oot! Gap is {round(test_oot_difference, 4)}")
-
-# print("\nFeature Importances:")
-# feature_importances = model.get_feature_importance()
-# feature_names = X_train.columns
-
-# feature_importance_df = pd.DataFrame({'feature': feature_names,'importance': feature_importances})
-# feature_importance_df = feature_importance_df.sort_values(by='importance', ascending=False)
-
-# for _, row in feature_importance_df.iterrows():
-#     print(f"{row['feature']} : {row['importance']:.4f}")
 
 with open("./models/model.pkl", "wb") as f:
     pickle.dump(model, f)
