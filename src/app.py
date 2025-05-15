@@ -19,58 +19,58 @@ def make_prediction():
     try:
         lat_value = float(st.session_state.get("lat_input", ""))
         if not (40 <= lat_value <= 40.65):
-            st.error(f"Latitude {lat_value} seems outside the expected range for Baku (40 - 40.65).")
+            st.error(f"Enlik {lat_value} Bakı sərhədlərindən kənardadır.")
             has_error = True
     except ValueError:
-        st.error("Latitude must be a valid number.")
+        st.error("Enlik qiyməti düzgün daxil edilməyib.")
         has_error = True
 
     try:
         lon_value = float(st.session_state.get("lon_input", ""))
         if not (49.25 <= lon_value <= 50.5):
-            st.error(f"Longitude {lon_value} seems outside the expected range for Baku (49.25 - 50.5).")
+            st.error(f"Uzunluq {lon_value} Bakı sərhədlərindən kənardadır.")
             has_error = True
     except ValueError:
-        st.error("Longitude must be a valid number.")
+        st.error("Uzunluq qiyməti düzgün daxil edilməyib.")
         has_error = True
 
     try:
         area_value = float(st.session_state.get("area", ""))
         if area_value <= 0:
-            st.error("Area must be greater than 0.")
+            st.error("Sahə 0-dan böyük olmalıdır.")
             has_error = True
     except ValueError:
-        st.error("Area must be a valid number.")
+        st.error("Sahənin qiyməti düzgün daxil edilməyib.")
         has_error = True
 
     try:
         rooms_value = int(st.session_state.get("rooms", ""))
         if rooms_value <= 0:
-            st.error("Rooms must be greater than 0.")
+            st.error("Otaq sayı 0-dan böyük olmalıdır.")
             has_error = True
     except ValueError:
-        st.error("Rooms must be a valid integer.")
+        st.error("Otaq sayının qiyməti düzgün daxil edilməyib.")
         has_error = True
 
     try:
         floor_value = int(st.session_state.get("floor", ""))
         if floor_value <= 0:
-            st.error("Floor must be greater than 0.")
+            st.error("Mərtəbə 0-dan böyük olmalıdır.")
             has_error = True
     except ValueError:
-        st.error("Floor must be a valid integer.")
+        st.error("Mərtəbənin qiyməti düzgün daxil edilməyib..")
         has_error = True
 
     try:
         max_floor_value = int(st.session_state.get("max_floor", ""))
         if max_floor_value <= 0:
-            st.error("Max Floor must be greater than 0.")
+            st.error("Maksimum mərtəbə sayı 0-dan böyük olmalıdır.")
             has_error = True
         elif floor_value and max_floor_value < floor_value:
-            st.error("Max Floor must be greater than or equal to Floor.")
+            st.error("Maksimum mərtəbə sayı mərtəbə sayına bərabər və ya ondan böyük olmalıdır.")
             has_error = True
     except ValueError:
-        st.error("Max Floor must be a valid integer.")
+        st.error("Maksimum mərtəbə sayının qiyməti düzgün daxil edilməyib.")
         has_error = True
 
     if not has_error:
@@ -97,14 +97,14 @@ def make_prediction():
 col1, col2 = st.columns([4, 2])
 
 with col1:
-    st.markdown("<h1 style='text-align: left; font-size: 2.5em; margin-bottom: 0.25em;'>Model Inference</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: left; font-size: 2.5em; margin-bottom: 0.25em;'>Model</h1>", unsafe_allow_html=True)
     
     default_lat = st.session_state.get('map_lat', '')
     default_lon = st.session_state.get('map_lon', '')
     
     lat_col, lon_col = st.columns(2)
-    latitude = lat_col.text_input("Latitude", value=default_lat, key="lat_input")
-    longitude = lon_col.text_input("Longitude", value=default_lon, key="lon_input")
+    latitude = lat_col.text_input("Enlik", value=default_lat, key="lat_input")
+    longitude = lon_col.text_input("Uzunluq", value=default_lon, key="lon_input")
 
     district_options = sorted([
         "Nəriman Nərimanov M.", "Əhmədli M.", "Neftçilər M.", "8 Noyabr M.", "Yeni Günəşli Q.",
@@ -129,29 +129,29 @@ with col1:
         "Keşlə Q.", "Zabrat Q.", "Xırdalan", "2-ci Alatava Q.", "Pirallahı R.",
         "Hökməli Q.", "28 May Q.", "2-ci Mikrorayon Q."
     ])
-    district = st.selectbox("District", options=district_options, key="district")
+    district = st.selectbox("Ərazi", options=district_options, key="district")
 
     rooms_col, area_col = st.columns(2)
-    rooms = rooms_col.text_input("Rooms", key="rooms")
-    area = area_col.text_input("Area", key="area")
+    rooms = rooms_col.text_input("Otaq sayı", key="rooms")
+    area = area_col.text_input("Sahə (m2)", key="area")
 
     floor_col, max_floor_col = st.columns(2)
-    floor = floor_col.text_input("Floor", key="floor")
-    max_floor = max_floor_col.text_input("Max Floor", key="max_floor")
+    floor = floor_col.text_input("Mərtəbə", key="floor")
+    max_floor = max_floor_col.text_input("Maksimum mərtəbə sayı", key="max_floor")
 
     category_col, situation_col = st.columns(2)
-    category_selection = category_col.radio("Category", options=["Old Building", "New Building"], horizontal=True)
-    st.session_state["category"] = 0 if category_selection == "Old Building" else 1
+    category_selection = category_col.radio("Kateqoriya", options=["Köhnə tikili", "Yeni tikili"], horizontal=True)
+    st.session_state["category"] = 0 if category_selection == "Köhnə tikili" else 1
 
-    situation_selection = situation_col.radio("Situation", options=["Not Repaired", "Repaired"], horizontal=True)
-    st.session_state["repaired"] = 0 if situation_selection == "Not Repaired" else 1
+    situation_selection = situation_col.radio("Təmir", options=["Təmirsiz", "Təmirli"], horizontal=True)
+    st.session_state["repaired"] = 0 if situation_selection == "Təmirsiz" else 1
 
-    if st.button("🚀 Predict", use_container_width=True):
+    if st.button("🤔 Təxmin et", use_container_width=True):
         make_prediction()
 
 with col2:
     st.markdown("<div style='margin-top: 64px'></div>", unsafe_allow_html=True)
-    st.subheader("🗺️ Map")
+    st.subheader("🗺️ Xəritə")
     m = folium.Map(location=[40.4093, 49.8671], zoom_start=10, tiles="OpenStreetMap")
     m.add_child(folium.LatLngPopup())
 
